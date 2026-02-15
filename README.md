@@ -21,10 +21,10 @@ Based on [Geoffrey Huntley's Ralph pattern](https://ghuntley.com/ralph/).
 
 ### Quick install (Codex default)
 
-Run this from the Ralph repo root:
+Run this from your project root (downloads Ralph first):
 
 ```bash
-mkdir -p scripts/ralph .codex/skills && install -m 755 ralph.sh scripts/ralph/ralph.sh && install -m 644 CODEX.md scripts/ralph/CODEX.md && cp -R skills/prd skills/ralph .codex/skills/ && { grep -qxF '.codex/skills/prd/' .gitignore || echo '.codex/skills/prd/' >> .gitignore; } && { grep -qxF '.codex/skills/ralph/' .gitignore || echo '.codex/skills/ralph/' >> .gitignore; }
+RALPH_REPO_URL="${RALPH_REPO_URL:-https://github.com/Ameyanagi/ralph-codex.git}" && TMP_DIR="$(mktemp -d)" && git clone --depth 1 "$RALPH_REPO_URL" "$TMP_DIR/ralph-codex" && mkdir -p scripts/ralph .codex/skills && install -m 755 "$TMP_DIR/ralph-codex/scripts/ralph/ralph.sh" scripts/ralph/ralph.sh && install -m 644 "$TMP_DIR/ralph-codex/scripts/ralph/CODEX.md" scripts/ralph/CODEX.md && cp -R "$TMP_DIR/ralph-codex/skills/prd" "$TMP_DIR/ralph-codex/skills/ralph" .codex/skills/ && { grep -qxF '.codex/skills/prd/' .gitignore || echo '.codex/skills/prd/' >> .gitignore; } && { grep -qxF '.codex/skills/ralph/' .gitignore || echo '.codex/skills/ralph/' >> .gitignore; } && rm -rf "$TMP_DIR"
 ```
 
 ### Option 1: Copy to your project
@@ -34,14 +34,14 @@ Copy the ralph files into your project:
 ```bash
 # From your project root
 mkdir -p scripts/ralph
-cp /path/to/ralph/ralph.sh scripts/ralph/
+cp /path/to/ralph/scripts/ralph/ralph.sh scripts/ralph/
 
 # Copy the prompt template for your AI tool of choice:
-cp /path/to/ralph/prompt.md scripts/ralph/prompt.md    # For Amp
+cp /path/to/ralph/scripts/ralph/prompt.md scripts/ralph/prompt.md    # For Amp
 # OR
-cp /path/to/ralph/CLAUDE.md scripts/ralph/CLAUDE.md    # For Claude Code
+cp /path/to/ralph/scripts/ralph/CLAUDE.md scripts/ralph/CLAUDE.md    # For Claude Code
 # OR
-cp /path/to/ralph/CODEX.md scripts/ralph/CODEX.md      # For Codex CLI
+cp /path/to/ralph/scripts/ralph/CODEX.md scripts/ralph/CODEX.md      # For Codex CLI
 
 chmod +x scripts/ralph/ralph.sh
 ```
@@ -158,13 +158,13 @@ Ralph will:
 
 | File | Purpose |
 |------|---------|
-| `ralph.sh` | The bash loop that spawns fresh AI instances (supports `--tool amp`, `--tool claude`, or `--tool codex`) |
-| `prompt.md` | Prompt template for Amp |
-| `CLAUDE.md` | Prompt template for Claude Code |
-| `CODEX.md` | Prompt template for Codex CLI |
-| `prd.json` | User stories with `passes` status (the task list) |
+| `scripts/ralph/ralph.sh` | The bash loop that spawns fresh AI instances (supports `--tool amp`, `--tool claude`, or `--tool codex`) |
+| `scripts/ralph/prompt.md` | Prompt template for Amp |
+| `scripts/ralph/CLAUDE.md` | Prompt template for Claude Code |
+| `scripts/ralph/CODEX.md` | Prompt template for Codex CLI |
+| `scripts/ralph/prd.json` | User stories with `passes` status (the task list) |
 | `prd.json.example` | Example PRD format for reference |
-| `progress.txt` | Append-only learnings for future iterations |
+| `scripts/ralph/progress.txt` | Append-only learnings for future iterations |
 | `skills/prd/` | Skill for generating PRDs (works with Amp, Claude Code, and Codex) |
 | `skills/ralph/` | Skill for converting PRDs to JSON (works with Amp, Claude Code, and Codex) |
 | `.claude-plugin/` | Plugin manifest for Claude Code marketplace discovery |
@@ -238,10 +238,10 @@ Check current state:
 
 ```bash
 # See which stories are done
-cat prd.json | jq '.userStories[] | {id, title, passes}'
+cat scripts/ralph/prd.json | jq '.userStories[] | {id, title, passes}'
 
 # See learnings from previous iterations
-cat progress.txt
+cat scripts/ralph/progress.txt
 
 # Check git history
 git log --oneline -10

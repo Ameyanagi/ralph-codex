@@ -14,24 +14,24 @@ cd flowchart && npm run dev
 cd flowchart && npm run build
 
 # Run Ralph with Codex CLI (default)
-./ralph.sh [max_iterations]
+./scripts/ralph/ralph.sh [max_iterations]
 
 # Run Ralph with Amp
-./ralph.sh --tool amp [max_iterations]
+./scripts/ralph/ralph.sh --tool amp [max_iterations]
 
 # Run Ralph with Claude Code
-./ralph.sh --tool claude [max_iterations]
+./scripts/ralph/ralph.sh --tool claude [max_iterations]
 
 # Run Ralph with Codex CLI
-./ralph.sh --tool codex [max_iterations]
+./scripts/ralph/ralph.sh --tool codex [max_iterations]
 ```
 
 ## Key Files
 
-- `ralph.sh` - The bash loop that spawns fresh AI instances (supports `--tool codex`, `--tool amp`, or `--tool claude`)
-- `CODEX.md` - Instructions given to each Codex instance
-- `prompt.md` - Instructions given to each AMP instance
-- `CLAUDE.md` - Instructions given to each Claude Code instance
+- `scripts/ralph/ralph.sh` - The bash loop that spawns fresh AI instances (supports `--tool codex`, `--tool amp`, or `--tool claude`)
+- `scripts/ralph/CODEX.md` - Instructions given to each Codex instance
+- `scripts/ralph/prompt.md` - Instructions given to each AMP instance
+- `scripts/ralph/CLAUDE.md` - Instructions given to each Claude Code instance
 - `prd.json.example` - Example PRD format
 - `flowchart/` - Interactive React Flow diagram explaining how Ralph works
 
