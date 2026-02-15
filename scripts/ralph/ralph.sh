@@ -87,19 +87,32 @@ for i in $(seq 1 $MAX_ITERATIONS); do
   echo "  Ralph Iteration $i of $MAX_ITERATIONS ($TOOL)"
   echo "==============================================================="
 
+  COMPLETION_TEXT=""
+
   # Run the selected tool with the ralph prompt
   if [[ "$TOOL" == "amp" ]]; then
     OUTPUT=$(cat "$SCRIPT_DIR/prompt.md" | amp --dangerously-allow-all 2>&1 | tee /dev/stderr) || true
+    COMPLETION_TEXT="$OUTPUT"
   elif [[ "$TOOL" == "claude" ]]; then
     # Claude Code: use --dangerously-skip-permissions for autonomous operation, --print for output
     OUTPUT=$(claude --dangerously-skip-permissions --print < "$SCRIPT_DIR/CLAUDE.md" 2>&1 | tee /dev/stderr) || true
+    COMPLETION_TEXT="$OUTPUT"
   else
-    # Codex CLI: non-interactive execution with full autonomy for the Ralph loop
-    OUTPUT=$(codex exec --dangerously-bypass-approvals-and-sandbox - < "$SCRIPT_DIR/CODEX.md" 2>&1 | tee /dev/stderr) || true
+    # Codex CLI: capture only the final assistant message for completion checks.
+    # The full CLI output includes the input prompt, which contains the COMPLETE token.
+    LAST_MESSAGE_FILE=$(mktemp)
+    OUTPUT=$(codex exec --dangerously-bypass-approvals-and-sandbox --output-last-message "$LAST_MESSAGE_FILE" - < "$SCRIPT_DIR/CODEX.md" 2>&1 | tee /dev/stderr) || true
+    COMPLETION_TEXT=$(cat "$LAST_MESSAGE_FILE" 2>/dev/null || echo "")
+    rm -f "$LAST_MESSAGE_FILE"
+
+    # Fallback for older Codex CLIs that may not write output-last-message
+    if [[ -z "$COMPLETION_TEXT" ]]; then
+      COMPLETION_TEXT="$OUTPUT"
+    fi
   fi
   
   # Check for completion signal
-  if echo "$OUTPUT" | grep -q "<promise>COMPLETE</promise>"; then
+  if echo "$COMPLETION_TEXT" | grep -q "<promise>COMPLETE</promise>"; then
     echo ""
     echo "Ralph completed all tasks!"
     echo "Completed at iteration $i of $MAX_ITERATIONS"
