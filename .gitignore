@@ -11,3 +11,7 @@ progress.txt
 
 #Claude
 .claude/
+
+# Codex skill artifacts installed from this repo
+.codex/skills/prd/
+.codex/skills/ralph/
