@@ -52,4 +52,5 @@ npm run dev
 - Each iteration spawns a fresh AI instance (Codex, Amp, or Claude Code) with clean context
 - Memory persists via git history, `progress.txt`, and `prd.json`
 - Stories should be small enough to complete in one context window
+- Completion detection must require the final assistant response to equal `<promise>COMPLETE</promise>` exactly; substring matches are invalid
 - Always update AGENTS.md with discovered patterns for future iterations

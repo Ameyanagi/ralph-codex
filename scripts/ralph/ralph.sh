@@ -111,8 +111,8 @@ for i in $(seq 1 $MAX_ITERATIONS); do
     fi
   fi
   
-  # Check for completion signal
-  if echo "$COMPLETION_TEXT" | grep -q "<promise>COMPLETE</promise>"; then
+  # Completion is valid only when the final response is exactly this token.
+  if [[ "$COMPLETION_TEXT" == "<promise>COMPLETE</promise>" ]]; then
     echo ""
     echo "Ralph completed all tasks!"
     echo "Completed at iteration $i of $MAX_ITERATIONS"
