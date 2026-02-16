@@ -24,7 +24,7 @@ Based on [Geoffrey Huntley's Ralph pattern](https://ghuntley.com/ralph/).
 Run this from your project root (downloads Ralph first):
 
 ```bash
-RALPH_REPO_URL="${RALPH_REPO_URL:-https://github.com/Ameyanagi/ralph-codex.git}" && TMP_DIR="$(mktemp -d)" && git clone --depth 1 "$RALPH_REPO_URL" "$TMP_DIR/ralph-codex" && mkdir -p scripts/ralph .codex/skills && install -m 755 "$TMP_DIR/ralph-codex/scripts/ralph/ralph.sh" scripts/ralph/ralph.sh && install -m 644 "$TMP_DIR/ralph-codex/scripts/ralph/CODEX.md" scripts/ralph/CODEX.md && cp -R "$TMP_DIR/ralph-codex/skills/prd" "$TMP_DIR/ralph-codex/skills/ralph" .codex/skills/ && { grep -qxF '.codex/skills/prd/' .gitignore || echo '.codex/skills/prd/' >> .gitignore; } && { grep -qxF '.codex/skills/ralph/' .gitignore || echo '.codex/skills/ralph/' >> .gitignore; } && rm -rf "$TMP_DIR"
+RALPH_REPO_URL="${RALPH_REPO_URL:-https://github.com/Ameyanagi/ralph-codex.git}" && TMP_DIR="$(mktemp -d)" && git clone --depth 1 "$RALPH_REPO_URL" "$TMP_DIR/ralph-codex" && mkdir -p scripts/ralph .codex/skills && install -m 755 "$TMP_DIR/ralph-codex/scripts/ralph/ralph.sh" scripts/ralph/ralph.sh && install -m 644 "$TMP_DIR/ralph-codex/scripts/ralph/CODEX.md" scripts/ralph/CODEX.md && cp -R "$TMP_DIR/ralph-codex/skills/prd" "$TMP_DIR/ralph-codex/skills/ralph" "$TMP_DIR/ralph-codex/skills/prd-improve" .codex/skills/ && { grep -qxF '.codex/skills/prd/' .gitignore || echo '.codex/skills/prd/' >> .gitignore; } && { grep -qxF '.codex/skills/ralph/' .gitignore || echo '.codex/skills/ralph/' >> .gitignore; } && { grep -qxF '.codex/skills/prd-improve/' .gitignore || echo '.codex/skills/prd-improve/' >> .gitignore; } && rm -rf "$TMP_DIR"
 ```
 
 ### Option 1: Copy to your project
@@ -54,18 +54,21 @@ For AMP
 ```bash
 cp -r skills/prd ~/.config/amp/skills/
 cp -r skills/ralph ~/.config/amp/skills/
+cp -r skills/prd-improve ~/.config/amp/skills/
 ```
 
 For Claude Code (manual)
 ```bash
 cp -r skills/prd ~/.claude/skills/
 cp -r skills/ralph ~/.claude/skills/
+cp -r skills/prd-improve ~/.claude/skills/
 ```
 
 For Codex
 ```bash
 cp -r skills/prd ~/.codex/skills/
 cp -r skills/ralph ~/.codex/skills/
+cp -r skills/prd-improve ~/.codex/skills/
 ```
 
 ### Option 3: Use as Claude Code Marketplace
@@ -85,10 +88,12 @@ Then install the skills:
 Available skills after installation:
 - `/prd` - Generate Product Requirements Documents
 - `/ralph` - Convert PRDs to prd.json format
+- `/prd-improve` - Improve an existing PRD with a required Claude second opinion
 
 Skills are automatically invoked when you ask Claude to:
 - "create a prd", "write prd for", "plan this feature"
 - "convert this prd", "turn into ralph format", "create prd.json"
+- "improve this prd", "review this prd", "tighten requirements"
 
 ### Configure Amp auto-handoff (recommended)
 
@@ -167,6 +172,7 @@ Ralph will:
 | `scripts/ralph/progress.txt` | Append-only learnings for future iterations |
 | `skills/prd/` | Skill for generating PRDs (works with Amp, Claude Code, and Codex) |
 | `skills/ralph/` | Skill for converting PRDs to JSON (works with Amp, Claude Code, and Codex) |
+| `skills/prd-improve/` | Skill for improving PRDs with a required Claude second-opinion review |
 | `.claude-plugin/` | Plugin manifest for Claude Code marketplace discovery |
 | `flowchart/` | Interactive visualization of how Ralph works |
 

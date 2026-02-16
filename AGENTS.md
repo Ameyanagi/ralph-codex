@@ -32,6 +32,7 @@ cd flowchart && npm run build
 - `scripts/ralph/CODEX.md` - Instructions given to each Codex instance
 - `scripts/ralph/prompt.md` - Instructions given to each AMP instance
 - `scripts/ralph/CLAUDE.md` - Instructions given to each Claude Code instance
+- `skills/prd-improve/` - Skill for improving PRDs with a required Claude second-opinion review
 - `prd.json.example` - Example PRD format
 - `flowchart/` - Interactive React Flow diagram explaining how Ralph works
 

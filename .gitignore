@@ -16,3 +16,4 @@ scripts/ralph/archive/
 # Codex skill artifacts installed from this repo
 .codex/skills/prd/
 .codex/skills/ralph/
+.codex/skills/prd-improve/
