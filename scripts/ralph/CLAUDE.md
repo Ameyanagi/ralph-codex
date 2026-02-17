@@ -93,6 +93,7 @@ After completing a user story, check if ALL stories have `passes: true`.
 
 If ALL stories are complete and passing, reply with:
 <promise>COMPLETE</promise>
+Only output this token when complete; otherwise never mention `<promise>COMPLETE</promise>` anywhere in your response.
 
 If there are still stories with `passes: false`, end your response normally (another iteration will pick up the next story).
 
